@@ -1,0 +1,9 @@
+*.swp
+*.swo
+*.pyc
+config.ini
+supervisord.log
+supervisord.pid
+keys.py
+
+pickmybruin*.sql
