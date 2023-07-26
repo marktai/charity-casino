@@ -8,44 +8,42 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
     restart: always
-  websockets:
-    image: clover/websockets:latest
-    build: ./websockets
-    ports:
-      - "17002:80"
+  # websockets:
+  #   image: casino/websockets:latest
+  #   build: ./websockets
+  #   ports:
+  #     - "17005:80"
   backend:
-    image: clover/backend:latest
+    image: casino/backend:latest
     build: ./backend
     volumes:
       - ./backend/src:/app/src
     ports:
-      - "17001:80"
+      - "17006:80"
     depends_on:
       - db
-      - websockets
     restart: always
   frontend:
-    image: clover/frontend:latest
+    image: casino/frontend:latest
     build: ./frontend
     volumes:
       - ./frontend/src:/app/src
     ports:
-      - "17003:3000"
+      - "17007:3000"
     restart: always
   nginx:
-    image: clover/nginx:latest
+    image: casino/nginx:latest
     build: ./nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - backend
       - frontend
-      - websockets
     ports:
-      - "80:80"
+      - "15223:80"
     restart: always
   # cron:
-  #   image: clover/cron:latest
+  #   image: casino/cron:latest
   #   build: ./cron
   #   depends_on:
   #     - nginx

@@ -86,86 +86,19 @@ export function patchJson<T>(
   return httpJson<T>(new Request(path, args));
 };
 
-export default class CloverService {
+export default class CasinoService {
   public static host = '/api';
 
-  public static getGame(id: number|string): Promise<GameType> {
-    return getJson<GameType>(`${this.host}/games/${id}`);
+  public static getPeople(): Promise<Object> {
+    return getJson<Object>(`${this.host}/people`);
   }
 
-  public static getDailyGame(): Promise<GameType> {
-    return getJson<GameType>(`${this.host}/games/daily`);
+  public static getCharities(): Promise<Object> {
+    return getJson<Object>(`${this.host}/charities`);
   }
 
-  public static async getGames(wordList: string, adult: null|boolean): Promise<Array<GameType>> {
-    const gamesResponse = await getJson<Array<GameType>>(`${this.host}/games?word_list_name=${wordList}&adult=${adult}`);
-    var sortedGames = gamesResponse.slice();
-    sortedGames.sort((a, b) => {
-      if (a.last_updated_time === b.last_updated_time) {
-        return 0;
-      } else if (a.last_updated_time < b.last_updated_time) {
-        return 1;
-      } else {
-        return -1;
-      };
-    });
-    return sortedGames;
-  }
-
-  public static newGame(wordList: string): Promise<GameType> {
-    return postJson<GameType>(`${this.host}/games`, {word_list_name: wordList});
-  }
-
-  public static submitClues(id: number|string, clues: Array<string>, suggestedNumCards: number, author: string): Promise<GameType> {
-    const body = {
-      clues: clues,
-      suggested_num_cards: suggestedNumCards,
-      author: author,
-    }
-
-    return patchJson<GameType>(`${this.host}/games/${id}`, body);
-  }
-
-  public static async makeGuess(id: number|string, guess: Array<AnswerType>): Promise<GuessResponseType> {
-    const body = {
-      guess: guess,
-      client_id: this.getClientId(),
-    }
-
-    const response = await postJson<GuessResponse>(`${this.host}/games/${id}/guess`, body);
-    return response.results;
-  }
-
-  public static authorKey = 'author';
-  public static clientIdKey = 'client_id';
-
-  public static getClientId(): string {
-    let author = localStorage.getItem(this.authorKey);
-    let clientId = localStorage.getItem(this.clientIdKey);
-    if (clientId === null) {
-      clientId = uuidv4();
-      localStorage.setItem(this.clientIdKey, clientId as string);
-    }
-    return `${author ?? 'anon'}-${clientId}`;
-  }
-
-  public static async getClientState(id: number|string): Promise<null|BoardClientState> {
-    const response: HttpResponse<BoardClientState> = await fetch(`${this.host}/games/${id}/client_state`, { method: "GET" });
-    if (response.status === 404){
-      return null;
-    }
-    return await response.json();
-  }
-
-  public static updateClientState(id: number|string, data: any):   Promise<BoardClientState> {
-    const client_id = this.getClientId();
-
-    const body = {
-      data: data,
-      client_id: client_id,
-    }
-
-    return postJson<BoardClientState>(`${this.host}/games/${id}/client_state`, body);
+  public static updatePerson(person: Object): Promise<Object> {
+    return patchJson<GameType>(`${this.host}/people`, person);
   }
 }
 

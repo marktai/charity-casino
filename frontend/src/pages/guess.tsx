@@ -238,7 +238,7 @@ export class Guess extends React.Component<GuessProps, GuessState> {
     // https://stackoverflow.com/questions/4467539/javascript-modulo-gives-a-negative-result-for-negative-numbers
     const newRotation = (((this.state.guess.cardPositions[i][1] + n) % 4) + 4) % 4;
     newCardPositions[i][1] = newRotation;
-    // $.makeArray($(`.clover-card.card-${i.toString()}`)).map((card: any) => {
+    // $.makeArray($(`.casino-card.card-${i.toString()}`)).map((card: any) => {
     //   card.style['transition-duration'] = '0.3s';
     //   setTimeout(() => {
     //     card.style['transition-duration'] = '0s';
@@ -320,7 +320,7 @@ export class Guess extends React.Component<GuessProps, GuessState> {
   }
 
   async copyToClipboard() {
-    const text = `${this.state.game?.suggested_num_cards} card clover game by ${this.state.game?.author}\n${this.historyText().map((l) => l.join('')).join('\n')}\nPlay this puzzle at http://clover.marktai.com/games/${this.props.id}/guess`;
+    const text = `${this.state.game?.suggested_num_cards} card casino game by ${this.state.game?.author}\n${this.historyText().map((l) => l.join('')).join('\n')}\nPlay this puzzle at http://casino.marktai.com/games/${this.props.id}/guess`;
     this.setStateWithWrite({copiedToClipboard: true});
 
     if ('clipboard' in navigator) {
@@ -397,7 +397,7 @@ export class Guess extends React.Component<GuessProps, GuessState> {
     }
 
 
-    let cardClasses = ['clover-card', `card-${i}`,];
+    let cardClasses = ['casino-card', `card-${i}`,];
 
     let wordClasses = Array(4).fill(['word', 'shown-word']);
     for (let i = 0; i < 4; i++) {
@@ -598,7 +598,7 @@ export class Guess extends React.Component<GuessProps, GuessState> {
         </Row>
 
         <Row>
-          { this.state.game?.suggested_num_cards } card clover game by { this.state.game?.author }
+          { this.state.game?.suggested_num_cards } card casino game by { this.state.game?.author }
           { this.renderHistory() }
           { this.renderShareButton() }
         </Row>

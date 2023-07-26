@@ -20,15 +20,14 @@ root.render(
       crossOrigin="anonymous"
     />
     <BrowserRouter>
-      <Link to="/">All games</Link>
       <Routes>
         <Route index element={<List wordList="default"/>} />
-        <Route path="/adult" element={<List wordList="adult"/>} />
-        <Route path="/variant/:wordList" element={<List/>} />
-        <Route path="/games/:id/clues" element={<Clues />} />
-        <Route path="/games/:id/guess" element={<Guess />} />
-        <Route path="/games/new_daily" element={<Daily />} />
-        <Route path="/daily" element={<Daily />} />
+        // <Route path="/adult" element={<List wordList="adult"/>} />
+        // <Route path="/variant/:wordList" element={<List/>} />
+        // <Route path="/games/:id/clues" element={<Clues />} />
+        // <Route path="/games/:id/guess" element={<Guess />} />
+        // <Route path="/games/new_daily" element={<Daily />} />
+        // <Route path="/daily" element={<Daily />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -5,5 +5,7 @@ config.ini
 supervisord.log
 supervisord.pid
 keys.py
+google_credentials.json
+token.json
 
 pickmybruin*.sql

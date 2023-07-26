@@ -69,7 +69,7 @@ class Clues extends React.Component<CluesProps, CluesState> {
   renderCard(i: number) {
     const card = this.state.game?.answer_cards?.[i]
     return (
-      <div className="clover-card clue-card">
+      <div className="casino-card clue-card">
         <div className="word left-word bold-word top-word">{card?.[0]}</div>
         <div className="word right-word top-word">{card?.[3]}</div>
         <div className="word left-word bold-word bottom-word">{card?.[1]}</div>
@@ -204,7 +204,7 @@ class Clues extends React.Component<CluesProps, CluesState> {
         {
           this.state.game?.clues != null ?
             <Row>
-              <Col>Clues submitted at {this.state.game?.last_updated_time}! To guess, go to <a href={`http://clover.marktai.com/games/${this.props.id}/guess`}>http://clover.marktai.com/games/{this.props.id}/guess</a>
+              <Col>Clues submitted at {this.state.game?.last_updated_time}! To guess, go to <a href={`http://casino.marktai.com/games/${this.props.id}/guess`}>http://casino.marktai.com/games/{this.props.id}/guess</a>
               </Col>
             </Row>
           : null
