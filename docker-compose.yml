@@ -31,7 +31,7 @@ services:
     ports:
       - "17007:3000"
     restart: always
-  nginx:
+  nginx3:
     image: casino/nginx:latest
     build: ./nginx
     volumes:
@@ -40,7 +40,7 @@ services:
       - backend
       - frontend
     ports:
-      - "15223:80"
+      - "15225:80"
     restart: always
   # cron:
   #   image: casino/cron:latest

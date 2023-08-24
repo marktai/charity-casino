@@ -82,6 +82,7 @@ ol, ul {
   flex-wrap: wrap;
   position: relative;
   animation-duration: 0.5s;
+  background: white;
 }
 
 .casino-card.card-0 {
@@ -267,7 +268,6 @@ img.loader {
   /*border: 2px black solid;*/
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  background: white;
   margin: 16px;
   padding: 20px;
   text-align: center;
@@ -276,8 +276,8 @@ img.loader {
     to bottom,
     #007070,
     #009090 30%,
-    transparent 1rem,
-    transparent 100%
+    white 1rem,
+    white 100%
   );
 }
 
@@ -287,14 +287,14 @@ img.loader {
     to bottom,
     #800000,
     #800000 30%,
-    transparent 1rem,
-    transparent 100%
+    white 1rem,
+    white 100%
   );
 }
 
 
 .top-card .name { 
-  font-size: 20px;
+  font-size: 28px;
 }
 
 .top-card h1.number {
@@ -302,13 +302,18 @@ img.loader {
 }
 
 .picture-icon {
+
+  object-fit: cover;
   border-radius: 50%;
   width: 40px;
+  height: 40px;
 }
 
 .top-card .picture-icon {
-  width: 80%;
+  width: 15vw;
+  height: 15vw;
   max-width: 200px;
+  max-height: 200px;
 }
 
 .people-list .person {
@@ -333,6 +338,7 @@ img.loader {
   font-size: 20px;
 }
 
-body {
-  background: #f9f9f9;
+body>div#root {
+  background: #f0f0f0;
+  min-height: 100vh;
 }

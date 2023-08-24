@@ -183,7 +183,8 @@ def get_people():
         second_buy_in = num_or_none(person['2nd Buy In'])
         if second_buy_in: 
             person['Total Real Money'] += second_buy_in
-        people[person['Name']] = person
+        if person['Name']:
+            people[person['Name']] = person
 
     memoized_people = [people, time.time()]
     return people

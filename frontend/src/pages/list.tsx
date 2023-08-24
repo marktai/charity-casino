@@ -184,9 +184,19 @@ class List extends React.Component<ListProps, ListState> {
       })}
     </Row>
     : null
+            //<img src="https://www.marktai.com/download/54689/casino.png" style={{"width": "400px", "height": "400px"}}/>
 
     return (
       <Container className={"list" + (this.props.wordList !== "default" ? ` ${this.props.wordList}` : "")}>
+        <Row>
+          <Col xs={12}>
+            <ul>
+              <h4>Useful links: </h4>
+              <li><a href="https://forms.gle/FWJ543mswTFCGLNk6">Register</a></li>
+              <li><a href="https://docs.google.com/spreadsheets/d/1VL6c4AhWZXag6R01ibx0r6q3moqeaJWwstBPxMaUVu8/edit?resourcekey#gid=1783759077">Edit here</a></li>
+            </ul>
+          </Col>
+        </Row>
         { charityList }
         { topPeople }
         { peopleList }
