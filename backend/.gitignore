@@ -7,5 +7,7 @@ supervisord.pid
 keys.py
 google_credentials.json
 token.json
+charity-casino-service-account-9e6cd1a45f1b.json
+api_key.txt
 
 pickmybruin*.sql

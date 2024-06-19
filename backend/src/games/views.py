@@ -40,6 +40,10 @@ API_DEBOUNCE = 5.0 # seconds
 
 HEADERS = []
 CREDS = None
+API_KEY = None
+GEN_TOKEN_PATH = '/app/src/casino/token.json'
+SERVICE_ACCOUNT_TOKEN_PATH = '/app/src/casino/charity-casino-service-account-9e6cd1a45f1b.json'
+API_KEY_PATH = '/app/src/casino/api_key.txt'
 
 class BoardViewSet(viewsets.ModelViewSet):
     """
@@ -139,16 +143,34 @@ def login():
     Prints values from a sample spreadsheet.
     """
     global CREDS
+    global API_KEY
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('/app/src/casino/token.json'):
-        CREDS = Credentials.from_authorized_user_file('/app/src/casino/token.json', SCOPES)
+    print('at login')
+    if os.path.exists(API_KEY_PATH):
+        print('reading from %s' % API_KEY_PATH)
+        with open(API_KEY_PATH, 'r') as api_key_file:
+            API_KEY = api_key_file.read().strip()
+        return 
+
+    if os.path.exists(GEN_TOKEN_PATH):
+        print('reading from %s' % GEN_TOKEN_PATH)
+        CREDS = Credentials.from_authorized_user_file(GEN_TOKEN_PATH, SCOPES)
+    elif os.path.exists(SERVICE_ACCOUNT_TOKEN_PATH):
+        print('reading from %s' % SERVICE_ACCOUNT_TOKEN_PATH)
+ 
+        with open(SERVICE_ACCOUNT_TOKEN_PATH) as source:
+            info = json.load(source)
+
+        CREDS = Credentials.from_authorized_user_info(info)
     # If there are no (valid) credentials available, let the user log in.
     if not CREDS or not CREDS.valid:
         if CREDS and CREDS.expired and CREDS.refresh_token:
+            print('refreshing')
             CREDS.refresh(Request())
         else:
+            print('requesting fresh token')
             flow = InstalledAppFlow.from_client_secrets_file(
                 '/app/src/casino/google_credentials.json', SCOPES)
             CREDS = flow.run_local_server(port=0)
@@ -165,24 +187,32 @@ def get_people():
         return memoized_people[0]
     print("burned cache")
     login()
-    service = build('sheets', 'v4', credentials=CREDS)
 
     # Call the Sheets API
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
-                                range=ALL_PEOPLE_RANGE).execute()
+    # service = build('sheets', 'v4', credentials=CREDS)
+    # sheet = service.spreadsheets()
+    # result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+    #                             range=ALL_PEOPLE_RANGE).execute()
+    response = requests.get(f'https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{ALL_PEOPLE_RANGE}?key={API_KEY}')
+    result = response.json()
     values = result.get('values', [])
     global HEADERS
     HEADERS = values[0]
 
     people = {}
     for i, row in enumerate(values[1:]):
-        person = {x[0]: None if x[1] == '' else x[1] for x in zip(HEADERS, row) if x[0] != ''}
+        person = {x[0]: None if x[1] == '' else x[1] for x in zip(HEADERS, row + [0] * (len(HEADERS) - len(row))) if x[0] != ''}
+        print(row)
+        print(person)
         person['row_number'] = i + 2
         person['Total Real Money'] = num_or_none(person['Initial Donation'])
+        person['Current Funny Munny'] = num_or_none(person['Current Funny Munny'])
         second_buy_in = num_or_none(person['2nd Buy In'])
         if second_buy_in: 
             person['Total Real Money'] += second_buy_in
+        if 'Image Link' not in person or not person['Image Link']:
+            person['Image Link'] = 'https://static.vecteezy.com/system/resources/previews/006/936/480/original/cute-welsh-corgi-dog-waving-paw-cartoon-icon-illustration-vector.jpg'
+
         if person['Name']:
             people[person['Name']] = person
 

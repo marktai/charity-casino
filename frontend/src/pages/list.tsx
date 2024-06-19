@@ -41,7 +41,7 @@ class List extends React.Component<ListProps, ListState> {
     this.refresh();
     setTimeout(() => {
       this.refreshTimer();
-    }, 1000);
+    }, 10000);
   }
 
   async componentDidMount() {
@@ -118,27 +118,30 @@ class List extends React.Component<ListProps, ListState> {
                 <h1 className="number">1.  §{this.numberWithCommas(this.state.people[0]["Current Funny Munny"])}</h1>
                 <img className="picture-icon" src={this.state.people[0]["Image Link"]}/>
                 <div className="name">{this.state.people[0]["Name"]}</div>
-                <div className="charity"><a href={this.state.people[0]["Charity Link"]}>{this.state.people[0]["Charity Category"] !== null ? this.state.people[0]["Charity Category"] : "Charity Link"}</a></div>
+                <div className="charity">{this.state.people[0]["Charity Link"]}</div>
               </div>
             </Col>
+            { this.state.people.length > 1 ?
             <Col xs={6} md={4}>
               <div className="top-card">
                 <h1 className="number">2.  §{this.numberWithCommas(this.state.people[1]["Current Funny Munny"])}</h1>
                 <img className="picture-icon" src={this.state.people[1]["Image Link"]}/>
                 <div className="name">{this.state.people[1]["Name"]}</div>
-                <div className="charity"><a href={this.state.people[1]["Charity Link"]}>{this.state.people[1]["Charity Category"] !== null ? this.state.people[1]["Charity Category"] : "Charity Link"}</a></div>
+                <div className="charity">{this.state.people[1]["Charity Link"]}</div>
               </div>
-            </Col>
+            </Col> : null
+            }
+            { this.state.people.length > 2 ?
             <Col xs={6} md={4}>
               <div className="top-card">
                 <h1 className="number">3.  §{this.numberWithCommas(this.state.people[2]["Current Funny Munny"])}</h1>
                 <img className="picture-icon" src={this.state.people[2]["Image Link"]}/>
                 <div className="name">{this.state.people[2]["Name"]}</div>
-                <div className="charity"><a href={this.state.people[2]["Charity Link"]}>{this.state.people[2]["Charity Category"] !== null ? this.state.people[2]["Charity Category"] : "Charity Link"}</a></div>
+                <div className="charity">{this.state.people[2]["Charity Link"]}</div>
               </div>
-            </Col>
+            </Col> : null 
+            }
           </Row> : <img className="loader" src="https://www.marktai.com/download/54689/ZZ5H.gif"/>
-
     const peopleList = this.state.people !== null ? <Row className="people-list">
       { this.state.people.map((person, i) => { 
         return <Col xs={12}>
@@ -155,7 +158,7 @@ class List extends React.Component<ListProps, ListState> {
               §{this.numberWithCommas(person["Current Funny Munny"])}
             </Col>
             <Col xs={3}>
-              <a href={person["Charity Link"]}>{person["Charity Category"] !== null ? person["Charity Category"] : "Charity Link"}</a>
+              {person["Charity Link"]}
             </Col>
           </Row>
         </Col>
