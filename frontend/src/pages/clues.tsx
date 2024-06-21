@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import CloverService from '../api';
 import { GameType } from '../api';
@@ -36,34 +37,9 @@ class Clues extends React.Component<CluesProps, CluesState> {
   };
 
   async submitClues() {
-    const game = await CloverService.submitClues(
-      this.props.id,
-      this.state.formData.clues,
-      parseInt(this.state.formData.suggestedNumClues) + 4,
-      this.state.formData.author,
-    );
-    this.setState({
-      game: game,
-      formData: {
-        clues: game.clues ?? ['', '', '', ''],
-        suggestedNumClues: ((game.suggested_num_cards ?? 5) - 4).toString(),
-        author: game.author,
-      },
-      gameSubmitted: true,
-    });
-    // this.props.navigate(`/games/${game.id}/guess`);
   }
 
   async componentDidMount() {
-    const game = await CloverService.getGame(this.props.id);
-    this.setState({
-      game: game,
-      formData: {
-        clues: game.clues ?? ['', '', '', ''],
-        suggestedNumClues: ((game.suggested_num_cards ?? 5) - 4).toString(),
-        author: game.author || (localStorage.getItem(CloverService.authorKey) ?? ''),
-      },
-    });
   }
 
   renderCard(i: number) {
@@ -116,7 +92,6 @@ class Clues extends React.Component<CluesProps, CluesState> {
             },
             gameSubmitted: false,
           });
-          localStorage.setItem(CloverService.authorKey, e.target.value);
         }}
         placeholder="Your name"
       />

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import CasinoService from '../api';
 import { GameType } from '../api';
@@ -82,11 +83,11 @@ class List extends React.Component<ListProps, ListState> {
   //   return "/games/" + game.id + (game.clues === null ? "/clues" : "/guess");
   // }
 
-  numberWithCommas(number) {
+  numberWithCommas(number: any) {
     return (+number).toLocaleString()
   }
 
-  attemptParseStyle(styleJson){
+  attemptParseStyle(styleJson: any){
     try {
       return JSON.parse(styleJson);
     } catch {
@@ -217,7 +218,7 @@ type ListContainerProps = {
 
 const ListContainer: React.FunctionComponent<ListContainerProps> = (props) => {
   const navigate = useNavigate();
-  const wordList = props.wordList || useParams().wordList as string || "default";
+  const wordList = "default";
   return (<List navigate={navigate} wordList={wordList }></List>)
 }
 

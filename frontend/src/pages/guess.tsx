@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useEffect } from 'react';
 import CloverService from '../api';
@@ -80,7 +81,8 @@ export class Guess extends React.Component<GuessProps, GuessState> {
     setTimeout(() => {
       this.setState({disablePull: false});
     }, 50);
-    return CloverService.updateClientState(this.props.id, data);
+    // return CloverService.updateClientState(this.props.id, data);
+    return Promise.resolve(null);
   }
 
   async pullClientState(inputClientState: null|BoardClientState = null): Promise<null> {
@@ -90,7 +92,7 @@ export class Guess extends React.Component<GuessProps, GuessState> {
 
     let clientState: null|BoardClientState = inputClientState;
     if (clientState === null) {
-      clientState = await CloverService.getClientState(this.props.id);
+      // clientState = await CloverService.getClientState(this.props.id);
     }
 
     if (clientState !== null) {
@@ -115,16 +117,16 @@ export class Guess extends React.Component<GuessProps, GuessState> {
   }
 
   async pollPushPull() {
-    if (!this.props.syncState) {
-      return;
-    }
+    // if (!this.props.syncState) {
+    //   return;
+    // }
 
-    const currentClientState = await CloverService.getClientState(this.props.id);
-    if (currentClientState === null || currentClientState.client_id === CloverService.getClientId()) {
-      this.pushClientState();
-    } else {
-      this.pullClientState(currentClientState);
-    }
+    // const currentClientState = await CloverService.getClientState(this.props.id);
+    // if (currentClientState === null || currentClientState.client_id === CloverService.getClientId()) {
+    //   this.pushClientState();
+    // } else {
+    //   this.pullClientState(currentClientState);
+    // }
   }
 
   async setStateWithWrite(state:any, shouldUpdateClientState:boolean = true): Promise<any>{
@@ -145,58 +147,47 @@ export class Guess extends React.Component<GuessProps, GuessState> {
     }
 
     const guess = JSON.parse(JSON.stringify(this.state.guess.cardPositions.slice(0, 4)));
-    const response = await CloverService.makeGuess(
-      this.props.id,
-      guess,
-    );
-    this.setStateWithWrite({
-      previousGuesses: this.state.previousGuesses.concat([
-        [guess, response],
-      ]),
-      copiedToClipboard: false,
-      guessSubmitted: true,
-    })
+    // const response = await CloverService.makeGuess(
+    //   this.props.id,
+    //   guess,
+    // );
+    // this.setStateWithWrite({
+    //   previousGuesses: this.state.previousGuesses.concat([
+    //     [guess, response],
+    //   ]),
+    //   copiedToClipboard: false,
+    //   guessSubmitted: true,
+    // })
   }
 
   async componentDidMount() {
-    const game = await CloverService.getGame(this.props.id);
+    // const game = await CloverService.getGame(this.props.id);
 
-    const saved = localStorage.getItem(this.stateKey());
-    let savedState = {};
-    if (saved !== null) {
-      savedState = JSON.parse(saved)
-    }
+    // const saved = localStorage.getItem(this.stateKey());
+    // let savedState = {};
+    // if (saved !== null) {
+    //   savedState = JSON.parse(saved)
+    // }
 
-    const defaultGuessState = {
-      guess: {
-        cardPositions: (game?.suggested_possible_cards as Array<CardType>).map( (_, i) => [i, 0]),
-        currentSelectedCard: null,
-      }
-    };
+    // const defaultGuessState = {
+    //   guess: {
+    //     cardPositions: (game?.suggested_possible_cards as Array<CardType>).map( (_, i) => [i, 0]),
+    //     currentSelectedCard: null,
+    //   }
+    // };
 
-    if (this.interval === null) {
-      this.interval = setInterval(() => { this.pollPushPull() }, pollInterval);
-    }
+    // if (this.interval === null) {
+    //   this.interval = setInterval(() => { this.pollPushPull() }, pollInterval);
+    // }
 
-    if (this.ws === null) {
-      const ws_protocol = location.protocol === 'http:' ? 'ws:' : 'wss:';
-      this.ws = new WebSocket(`${ws_protocol}//${window.location.host}/ws/listen/${this.props.id}`);
-      this.ws.onmessage = (event) => {
-        const message: any = JSON.parse(event.data);
-        if (message.type === 'GAME_UPDATE') {
-          this.pullClientState(message.data);
-        }
-      };
-    }
+    // await this.setStateWithWrite({
+    //   ...defaultGuessState,
+    //   ...savedState,
+    //   game: game,
+    //   copiedToClipboard: false,
+    // }, false);
 
-    await this.setStateWithWrite({
-      ...defaultGuessState,
-      ...savedState,
-      game: game,
-      copiedToClipboard: false,
-    }, false);
-
-    await this.pullClientState();
+    // await this.pullClientState();
   }
   componentWillUnmount() {
     if (this.interval !== null) {

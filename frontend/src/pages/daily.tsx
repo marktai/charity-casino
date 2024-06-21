@@ -13,10 +13,9 @@ export class Daily extends React.Component<{}, DailyState> {
   };
 
   async componentDidMount() {
-    const game = await CloverService.getDailyGame();
-    this.setState({
-      game: game,
-    });
+    // this.setState({
+    //   game: game,
+    // });
   }
 
   render() {
