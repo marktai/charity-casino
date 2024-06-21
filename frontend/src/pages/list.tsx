@@ -200,7 +200,10 @@ class List extends React.Component<ListProps, ListState> {
             </ul>
           </Col>
         </Row>
+        <h2>Real Money by Charity Group</h2>
         { charityList }
+        <hr/>
+        <h2>Funnimunni Leaderboard</h2>
         { topPeople }
         { peopleList }
       </Container>

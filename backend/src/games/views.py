@@ -36,7 +36,7 @@ SPREADSHEET_ID = '1VL6c4AhWZXag6R01ibx0r6q3moqeaJWwstBPxMaUVu8'
 FIRST_EDITABLE_COLUMN = 'G'
 LAST_COLUMN = 'K'
 ALL_PEOPLE_RANGE = 'Database!A1:%s' % LAST_COLUMN
-API_DEBOUNCE = 5.0 # seconds
+API_DEBOUNCE = 10.0 # seconds
 
 HEADERS = []
 CREDS = None
@@ -202,8 +202,6 @@ def get_people():
     people = {}
     for i, row in enumerate(values[1:]):
         person = {x[0]: None if x[1] == '' else x[1] for x in zip(HEADERS, row + [0] * (len(HEADERS) - len(row))) if x[0] != ''}
-        print(row)
-        print(person)
         person['row_number'] = i + 2
         person['Total Real Money'] = num_or_none(person['Initial Donation'])
         person['Current Funny Munny'] = num_or_none(person['Current Funny Munny'])
@@ -310,12 +308,15 @@ class CharityView(APIView):
                 'https://static.vecteezy.com/system/resources/previews/000/630/430/original/vector-female-sign-icon-illustration.jpg',
                 {'background': 'pink'},
             ],
+            "Gaza Relief": [
+                'https://www.marktai.com/download/54689/Screenshot%202024-06-21%20at%204.53.01%E2%80%AFAM.png',
+                {},
+            ],
         }
         default_style = [None, {}]
         people = get_people()
         category_people = {}
         for p in people.values():
-            print(p)
             category_people.setdefault(p['Charity Category'], [])
             category_people[p['Charity Category']].append(p)
 
@@ -324,7 +325,7 @@ class CharityView(APIView):
             {
                 'Name': c, 
                 'Funny Munny': total_funny_munny(category_people[c]), 
-                'Real Money': round(total_real_money(people.values()) / total_funny_munny(people.values()) * total_funny_munny(category_people[c]), 2),
+                'Real Money': round(total_real_money(people.values()) / total_funny_munny(people.values()) * total_funny_munny(category_people[c]), 2) * 4 if 'gaza' in c.lower() else 1,
                 'Image Link': charity_styles.get(c, default_style)[0],
                 'Style': charity_styles.get(c, default_style)[1],
             }
