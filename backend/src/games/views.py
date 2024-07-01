@@ -325,7 +325,7 @@ class CharityView(APIView):
             {
                 'Name': c, 
                 'Funny Munny': total_funny_munny(category_people[c]), 
-                'Real Money': round(total_real_money(people.values()) / total_funny_munny(people.values()) * total_funny_munny(category_people[c]), 2) * 4 if 'gaza' in c.lower() else 1,
+                'Real Money': round(total_real_money(people.values()) / total_funny_munny(people.values()) * total_funny_munny(category_people[c]), 2) * (4 if 'gaza' in c.lower() else 1),
                 'Image Link': charity_styles.get(c, default_style)[0],
                 'Style': charity_styles.get(c, default_style)[1],
             }
